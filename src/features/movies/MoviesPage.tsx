@@ -5,6 +5,7 @@ import { PageHeader } from "../../components/ui/PageHeader";
 import { Spinner } from "../../components/ui/Spinner";
 import { useAsync } from "../../hooks/useAsync";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { MovieEditDialog } from "./MovieEditDialog";
 import { MovieForm } from "./MovieForm";
 import { MovieList } from "./MovieList";
 import type { Movie } from "./movie.interface";
@@ -13,6 +14,9 @@ export const MoviesPage = () => {
   const { data: movies, error, loading, reload, update } = useAsync(getMovies);
   const [pendingIds, setPendingIds] = useState<number[]>([]);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
+
+  const editingMovie = movies?.find((movie) => movie.id === editingId) ?? null;
 
   const handleToggleWatched = async (movie: Movie) => {
     setActionError(null);
@@ -33,6 +37,26 @@ export const MoviesPage = () => {
     update((current) => [...current, movie]);
   };
 
+  const handleSaved = (saved: Movie) => {
+    update((current) =>
+      current.map((item) => (item.id === saved.id ? saved : item)),
+    );
+  };
+
+  // the backend also removes the deleted movie from other movies' prerequisite lists
+  const handleDeleted = (id: number) => {
+    update((current) =>
+      current
+        .filter((item) => item.id !== id)
+        .map((item) => ({
+          ...item,
+          prerequisites: item.prerequisites.filter(
+            (prerequisiteId) => prerequisiteId !== id,
+          ),
+        })),
+    );
+  };
+
   const renderList = () => {
     if (movies === null) {
       return loading ? (
@@ -49,6 +73,7 @@ export const MoviesPage = () => {
         movies={movies}
         pendingIds={pendingIds}
         onToggleWatched={handleToggleWatched}
+        onEdit={(movie) => setEditingId(movie.id)}
       />
     );
   };
@@ -72,6 +97,17 @@ export const MoviesPage = () => {
           </aside>
         )}
       </div>
+
+      {movies !== null && editingMovie && (
+        <MovieEditDialog
+          key={editingMovie.id}
+          movie={editingMovie}
+          movies={movies}
+          onClose={() => setEditingId(null)}
+          onSaved={handleSaved}
+          onDeleted={handleDeleted}
+        />
+      )}
     </section>
   );
 };

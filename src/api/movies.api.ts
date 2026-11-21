@@ -1,5 +1,6 @@
 import type {
   CreateMovieInput,
+  DeleteMovieResponse,
   Movie,
   UpdateMovieInput,
 } from "../features/movies/movie.interface";
@@ -14,3 +15,6 @@ export const updateMovie = (
   id: number,
   input: UpdateMovieInput,
 ): Promise<Movie> => api.patch<Movie>(`/movies/${id}`, input);
+
+export const deleteMovie = (id: number): Promise<DeleteMovieResponse> =>
+  api.delete<DeleteMovieResponse>(`/movies/${id}`);

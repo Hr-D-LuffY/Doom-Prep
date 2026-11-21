@@ -37,3 +37,8 @@ export interface FormValidationResult {
   errors: FieldErrors;
   input: CreateMovieInput | null;
 }
+
+export interface DeleteMovieResponse {
+  message: string;
+  id: number;
+}

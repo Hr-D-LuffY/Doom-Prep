@@ -5,12 +5,14 @@ interface MovieListProps {
   movies: Movie[];
   pendingIds: number[];
   onToggleWatched: (movie: Movie) => void;
+  onEdit: (movie: Movie) => void;
 }
 
 export const MovieList = ({
   movies,
   pendingIds,
   onToggleWatched,
+  onEdit,
 }: MovieListProps) => {
   if (movies.length === 0) {
     return (
@@ -57,6 +59,7 @@ export const MovieList = ({
               )}
               pending={pendingIds.includes(movie.id)}
               onToggleWatched={onToggleWatched}
+              onEdit={onEdit}
             />
           ))}
         </ul>
