@@ -1,3 +1,4 @@
+import { WatchToggle } from "../../components/ui/WatchToggle";
 import type { Movie } from "./movie.interface";
 
 interface MovieFrameProps {
@@ -8,7 +9,6 @@ interface MovieFrameProps {
   onEdit: (movie: Movie) => void;
 }
 
-// One frame of film: dark until watched, then "developed" (light)
 export const MovieFrame = ({
   movie,
   prerequisiteTitles,
@@ -25,32 +25,12 @@ export const MovieFrame = ({
         movie.watched ? "bg-frame text-ink" : "bg-reel-deep text-pale"
       }`}
     >
-      <span className="relative flex h-7 w-7 shrink-0">
-        <input
-          id={inputId}
-          type="checkbox"
-          checked={movie.watched}
-          disabled={pending}
-          onChange={() => onToggleWatched(movie)}
-          className="peer sr-only"
-        />
-        <span
-          aria-hidden="true"
-          className="h-7 w-7 rounded-full border-2 border-brass-light peer-checked:border-ink peer-checked:bg-brass peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-current peer-disabled:opacity-50"
-        />
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 20 20"
-          className="pointer-events-none absolute inset-0 m-auto h-4 w-4 text-ink opacity-0 peer-checked:opacity-100"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M4 10.5l4 4 8-9" />
-        </svg>
-      </span>
+      <WatchToggle
+        id={inputId}
+        checked={movie.watched}
+        disabled={pending}
+        onChange={() => onToggleWatched(movie)}
+      />
 
       <div className="min-w-0">
         <label
