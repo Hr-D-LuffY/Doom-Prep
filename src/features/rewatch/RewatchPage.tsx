@@ -8,7 +8,7 @@ import { Spinner } from "../../components/ui/Spinner";
 import { useAsync } from "../../hooks/useAsync";
 import type { Movie } from "../movies/movie.interface";
 import { RewatchPlanView } from "./RewatchPlanView";
-
+import { EmptyState } from "../../components/ui/EmptyState";
 const DEFAULT_TARGET_TITLE = "Avengers: Doomsday";
 
 const getDefaultTargetId = (movies: Movie[]): number | null => {
@@ -35,7 +35,7 @@ export const RewatchPage = () => {
     const targetId = selectedId ?? getDefaultTargetId(movies);
     if (targetId === null) {
       return (
-        <p className="rounded-lg border border-dashed border-edge px-4 py-12 text-center text-ink-soft">
+        <EmptyState>
           You have no movies yet.{" "}
           <Link
             to="/movies"
@@ -44,7 +44,7 @@ export const RewatchPage = () => {
             Add some on the Movies page
           </Link>{" "}
           to build a plan.
-        </p>
+        </EmptyState>
       );
     }
 

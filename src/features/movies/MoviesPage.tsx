@@ -9,7 +9,6 @@ import { MovieEditDialog } from "./MovieEditDialog";
 import { MovieForm } from "./MovieForm";
 import { MovieList } from "./MovieList";
 import type { Movie } from "./movie.interface";
-
 export const MoviesPage = () => {
   const { data: movies, error, loading, reload, update } = useAsync(getMovies);
   const [pendingIds, setPendingIds] = useState<number[]>([]);
@@ -92,7 +91,7 @@ export const MoviesPage = () => {
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div>{renderList()}</div>
         {movies !== null && (
-          <aside className="lg:sticky lg:top-6">
+          <aside className="lg:sticky lg:top-6 lg:max-h-[calc(100dvh-3rem)] lg:overflow-y-auto">
             <MovieForm movies={movies} onCreated={handleCreated} />
           </aside>
         )}

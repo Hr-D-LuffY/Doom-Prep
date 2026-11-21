@@ -10,6 +10,7 @@ import { getErrorMessage } from "../../utils/getErrorMessage";
 import { RewatchFrame } from "./RewatchFrame";
 import type { RewatchItem } from "./rewatch.interface";
 import { updatePlanWatched } from "./updatePlanWatched";
+import { EmptyState } from "../../components/ui/EmptyState";
 
 interface RewatchPlanViewProps {
   targetId: number;
@@ -50,10 +51,10 @@ export const RewatchPlanView = ({ targetId }: RewatchPlanViewProps) => {
 
   if (plan.totalCount === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-edge px-4 py-12 text-center text-ink-soft">
+      <EmptyState>
         {plan.target.title} has no prerequisites, so there is nothing to watch
         first.
-      </p>
+      </EmptyState>
     );
   }
 

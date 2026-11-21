@@ -2,6 +2,7 @@ import { FilmStrip } from "../../components/ui/FilmStrip";
 import { ProgressBar } from "../../components/ui/ProgressBar";
 import { MovieFrame } from "./MovieFrame";
 import type { Movie } from "./movie.interface";
+import { EmptyState } from "../../components/ui/EmptyState";
 
 interface MovieListProps {
   movies: Movie[];
@@ -10,12 +11,15 @@ interface MovieListProps {
   onEdit: (movie: Movie) => void;
 }
 
-export const MovieList = ({ movies, pendingIds, onToggleWatched, onEdit }: MovieListProps) => {
+export const MovieList = ({
+  movies,
+  pendingIds,
+  onToggleWatched,
+  onEdit,
+}: MovieListProps) => {
   if (movies.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-edge px-4 py-12 text-center text-ink-soft">
-        No movies yet. Add the first one with the form.
-      </p>
+      <EmptyState>No movies yet. Add the first one with the form.</EmptyState>
     );
   }
 
@@ -29,7 +33,11 @@ export const MovieList = ({ movies, pendingIds, onToggleWatched, onEdit }: Movie
           {watchedCount} of {movies.length} watched
         </p>
         <div className="mt-3">
-          <ProgressBar value={watchedCount} max={movies.length} label="Movies watched" />
+          <ProgressBar
+            value={watchedCount}
+            max={movies.length}
+            label="Movies watched"
+          />
         </div>
       </div>
 
@@ -38,7 +46,9 @@ export const MovieList = ({ movies, pendingIds, onToggleWatched, onEdit }: Movie
           <MovieFrame
             key={movie.id}
             movie={movie}
-            prerequisiteTitles={movie.prerequisites.map((id) => titleById.get(id) ?? `Movie #${id}`)}
+            prerequisiteTitles={movie.prerequisites.map(
+              (id) => titleById.get(id) ?? `Movie #${id}`,
+            )}
             pending={pendingIds.includes(movie.id)}
             onToggleWatched={onToggleWatched}
             onEdit={onEdit}
