@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router";
+import { DoomsdayCountdown } from "./DoomsdayCountdown";
 
 const navItems = [
   { to: "/movies", label: "Movies" },
@@ -7,20 +8,23 @@ const navItems = [
 ];
 
 const linkClass = ({ isActive }: { isActive: boolean }): string =>
-  `rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+  `-mb-px border-b-[3px] pb-3 text-base font-medium motion-safe:transition-colors ${
     isActive
-      ? "bg-red-600 text-white"
-      : "text-slate-300 hover:bg-slate-800 hover:text-white"
+      ? "border-brass text-ink"
+      : "border-transparent text-ink-soft hover:text-ink"
   }`;
 
 export const AppLayout = () => (
-  <div className="min-h-screen bg-slate-950 text-slate-100">
-    <header className="border-b border-slate-800 bg-slate-900">
-      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-lg font-bold tracking-tight">
-          Doomsday <span className="text-red-500">Ready</span>
-        </h1>
-        <nav className="flex gap-1">
+  <div className="min-h-screen">
+    <header className="border-b border-line">
+      <div className="mx-auto max-w-6xl px-4 pt-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+          <h1 className="font-display text-3xl font-bold leading-none tracking-tight">
+            Doomsday Ready
+          </h1>
+          <DoomsdayCountdown />
+        </div>
+        <nav aria-label="Main" className="mt-5 flex gap-6 overflow-x-auto">
           {navItems.map((item) => (
             <NavLink key={item.to} to={item.to} className={linkClass}>
               {item.label}
@@ -29,7 +33,7 @@ export const AppLayout = () => (
         </nav>
       </div>
     </header>
-    <main className="mx-auto max-w-5xl px-4 py-8">
+    <main className="mx-auto max-w-6xl px-4 py-10">
       <Outlet />
     </main>
   </div>

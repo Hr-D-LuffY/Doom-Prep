@@ -5,6 +5,7 @@ import { PageHeader } from "../../components/ui/PageHeader";
 import { Spinner } from "../../components/ui/Spinner";
 import { useAsync } from "../../hooks/useAsync";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { MovieForm } from "./MovieForm";
 import { MovieList } from "./MovieList";
 import type { Movie } from "./movie.interface";
 
@@ -28,7 +29,11 @@ export const MoviesPage = () => {
     }
   };
 
-  const renderContent = () => {
+  const handleCreated = (movie: Movie) => {
+    update((current) => [...current, movie]);
+  };
+
+  const renderList = () => {
     if (movies === null) {
       return loading ? (
         <Spinner label="Loading movies..." />
@@ -55,11 +60,18 @@ export const MoviesPage = () => {
         description="Add movies, edit their prerequisites and tick them as watched."
       />
       {actionError && (
-        <div className="mb-4">
+        <div className="mb-5">
           <ErrorMessage message={actionError} />
         </div>
       )}
-      {renderContent()}
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+        <div>{renderList()}</div>
+        {movies !== null && (
+          <aside className="lg:sticky lg:top-6">
+            <MovieForm movies={movies} onCreated={handleCreated} />
+          </aside>
+        )}
+      </div>
     </section>
   );
 };

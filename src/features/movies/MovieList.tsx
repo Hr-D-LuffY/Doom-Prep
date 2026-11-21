@@ -1,3 +1,4 @@
+import { MovieFrame } from "./MovieFrame";
 import type { Movie } from "./movie.interface";
 
 interface MovieListProps {
@@ -13,57 +14,54 @@ export const MovieList = ({
 }: MovieListProps) => {
   if (movies.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-slate-700 px-4 py-10 text-center text-sm text-slate-400">
-        No movies yet.
+      <p className="rounded-lg border border-dashed border-edge px-4 py-12 text-center text-ink-soft">
+        No movies yet. Add the first one with the form.
       </p>
     );
   }
 
   const titleById = new Map(movies.map((movie) => [movie.id, movie.title]));
   const watchedCount = movies.filter((movie) => movie.watched).length;
+  const percent = Math.round((watchedCount / movies.length) * 100);
 
   return (
     <div>
-      <p className="mb-3 text-sm text-slate-400">
-        {watchedCount} of {movies.length} watched
-      </p>
-      <ul className="divide-y divide-slate-800 overflow-hidden rounded-lg border border-slate-800 bg-slate-900">
-        {movies.map((movie) => {
-          const isPending = pendingIds.includes(movie.id);
-          const prerequisiteTitles = movie.prerequisites.map(
-            (id) => titleById.get(id) ?? `Movie #${id}`,
-          );
+      <div className="mb-5">
+        <p className="font-display text-3xl font-semibold leading-none">
+          {watchedCount} of {movies.length} watched
+        </p>
+        <div
+          role="progressbar"
+          aria-label="Movies watched"
+          aria-valuemin={0}
+          aria-valuemax={movies.length}
+          aria-valuenow={watchedCount}
+          className="mt-3 h-1.5 overflow-hidden rounded-full bg-line"
+        >
+          <div
+            className="h-full rounded-full bg-brass motion-safe:transition-[width] motion-safe:duration-300"
+            style={{ width: `${percent}%` }}
+          />
+        </div>
+      </div>
 
-          return (
-            <li key={movie.id} className="flex items-start gap-4 px-4 py-3">
-              <input
-                type="checkbox"
-                id={`watched-${movie.id}`}
-                checked={movie.watched}
-                disabled={isPending}
-                onChange={() => onToggleWatched(movie)}
-                className="mt-1 h-4 w-4 shrink-0 accent-red-600"
-              />
-              <div className="min-w-0 flex-1">
-                <label
-                  htmlFor={`watched-${movie.id}`}
-                  className={`font-medium ${movie.watched ? "text-slate-400" : "text-slate-100"}`}
-                >
-                  {movie.title}
-                </label>
-                <p className="mt-0.5 text-xs text-slate-400">
-                  {movie.releaseYear} · {movie.runtime} min
-                </p>
-                {prerequisiteTitles.length > 0 && (
-                  <p className="mt-1 text-xs text-slate-500">
-                    Watch first: {prerequisiteTitles.join(", ")}
-                  </p>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="grid grid-cols-[26px_minmax(0,1fr)] overflow-hidden rounded-xl bg-reel sm:grid-cols-[26px_minmax(0,1fr)_26px]">
+        <div aria-hidden="true" className="sprockets" />
+        <ul className="flex flex-col gap-1.5 py-2">
+          {movies.map((movie) => (
+            <MovieFrame
+              key={movie.id}
+              movie={movie}
+              prerequisiteTitles={movie.prerequisites.map(
+                (id) => titleById.get(id) ?? `Movie #${id}`,
+              )}
+              pending={pendingIds.includes(movie.id)}
+              onToggleWatched={onToggleWatched}
+            />
+          ))}
+        </ul>
+        <div aria-hidden="true" className="sprockets hidden sm:block" />
+      </div>
     </div>
   );
 };

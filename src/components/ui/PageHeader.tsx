@@ -4,8 +4,10 @@ interface PageHeaderProps {
 }
 
 export const PageHeader = ({ title, description }: PageHeaderProps) => (
-  <div className="mb-6">
-    <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
-    <p className="mt-1 text-sm text-slate-400">{description}</p>
+  <div className="mb-8">
+    <h2 className="font-display text-4xl font-bold leading-none tracking-tight sm:text-5xl">
+      {title}
+    </h2>
+    <p className="mt-3 max-w-prose text-ink-soft">{description}</p>
   </div>
 );

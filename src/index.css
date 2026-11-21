@@ -1,1 +1,50 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #eef0e8;
+  --color-surface: #f8f9f4;
+  --color-ink: #13231a;
+  --color-ink-soft: #46564b;
+  --color-line: #cfd6c8;
+  --color-edge: #7a877d;
+
+  --color-reel: #1b3a2a;
+  --color-reel-deep: #12281c;
+  --color-reel-soft: #9db2a1;
+  --color-pale: #e8eddd;
+  --color-frame: #dce4c8;
+
+  --color-brass: #c19a3a;
+  --color-brass-light: #d8b455;
+  --color-danger: #a63d2f;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Film perforations. The hole colour matches --color-paper. */
+  .sprockets {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='24'%3E%3Crect x='7' y='5' width='12' height='14' rx='3' fill='%23eef0e8'/%3E%3C/svg%3E");
+    background-repeat: repeat-y;
+    background-position: center top;
+  }
+}
